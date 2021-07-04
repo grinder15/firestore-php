@@ -46,20 +46,14 @@ abstract class TestCase extends BaseTestCase
     public static function setUpFirestore()
     {
         try {
-            self::$serviceAccount = ServiceAccount::fromArray([
-                'project_id'   => $_ENV['FIREBASE_PROJECT_ID'],
-                'client_id'    => $_ENV['FIREBASE_CLIENT_ID'],
-                'client_email' => $_ENV['FIREBASE_CLIENT_EMAIL'],
-                'private_key'  => str_replace('\n', "\n", $_ENV['FIREBASE_PRIVATE_KEY'])
-            ]);
+            self::$serviceAccount = ServiceAccount::fromValue('./keyfile.json');
         } catch (\Throwable $e) {
             self::markTestSkipped('The integration tests require FIREBASE_PROJECT_ID, FIREBASE_CLIENT_ID, FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY env variables');
-
             return;
         }
 
         self::$firestore = (new Factory())
             ->withServiceAccount(self::$serviceAccount)
-            ->createFirestore();
+            ->createRestFirestore();
     }
 }

@@ -53,7 +53,9 @@ class DocumentTest extends TestCase
             'third' => 'new',
         ];
 
-        $this->assertEquals($expected, $doc->snapshot()->data());
+        $actual = $doc->snapshot()->data();
+
+        $this->assertEmpty(array_diff($expected, $actual));
     }
 
     public function validValues()
